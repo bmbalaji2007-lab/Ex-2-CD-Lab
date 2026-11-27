@@ -35,52 +35,39 @@
 # Program :
 ```
 
+
+%{
 #include <stdio.h>
 #include <ctype.h>
-#include <string.h>
+%}
 
-int main()
-{
-    char s[100];
-    int i = 0;
+%%
 
-    printf("Enter the input: ");
-    fgets(s, sizeof(s), stdin);
+"if"        { printf("Keyword: %s\n", yytext); }
+"else"      { printf("Keyword: %s\n", yytext); }
+"while"     { printf("Keyword: %s\n", yytext); }
+"for"       { printf("Keyword: %s\n", yytext); }
 
-    while (s[i] != '\0')
-    {
-        if (isspace(s[i]))
-        {
-            i++;
-        }
-        else if (isalpha(s[i]) || s[i] == '_')
-        {
-            printf("Identifier: ");
-            while (isalnum(s[i]) || s[i] == '_')
-                printf("%c", s[i++]);
-            printf("\n");
-        }
-        else if (isdigit(s[i]))
-        {
-            printf("Number: ");
-            while (isdigit(s[i]))
-                printf("%c", s[i++]);
-            printf("\n");
-        }
-        else if (strchr("+-*/=", s[i]))
-        {
-            printf("Operator: %c\n", s[i]);
-            i++;
-        }
-        else
-        {
-            printf("Special Symbol: %c\n", s[i]);
-            i++;
-        }
-    }
+[0-9]+      { printf("Number: %s\n", yytext); }
+[a-zA-Z_][a-zA-Z0-9_]*   { printf("Identifier: %s\n", yytext); }
 
+"=="|"="    { printf("Operator: %s\n", yytext); }
+"+"|"-"|"*"|"/" { printf("Operator: %s\n", yytext); }
+
+[ \t\n]     ;   // Ignore whitespace
+.           { printf("Unknown: %s\n", yytext); }
+
+%%
+
+int main(int argc, char **argv) {
+    yylex();
     return 0;
 }
+
+int yywrap() {
+    return 1;
+}
+
 
 
 
@@ -88,8 +75,8 @@ int main()
 # INPUT
  # a = 10 + 20
 # OUTPUT
-<img width="1918" height="1079" alt="image" src="https://github.com/user-attachments/assets/f0a36b30-1523-4f76-b131-c56dff4407cd" />
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/d3b532e2-37c0-4d78-8803-e4b0ad7b33a8" />
+<img width="1673" height="940" alt="image" src="https://github.com/user-attachments/assets/e82be711-ad0b-400e-8499-55cf58e23309" />
+
 
 # RESULT
 ## The lexical analyzer is implemented using lex and the output is verified.
